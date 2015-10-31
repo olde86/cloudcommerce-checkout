@@ -1,0 +1,30 @@
+{
+  "name": "cloudcommerce-checkout",
+  "description": "Application to handle checout for cloudcommerce",
+  "main": "index.js",
+  "authors": [
+    "Henrik Oldenborg"
+  ],
+  "license": "UNLICENSED",
+  "moduleType": [],
+  "homepage": "http://www.cloudcommerce.com",
+  "private": true,
+  "dependencies": {
+    "baseline": "skel-baseline#~3.0.0"
+  },
+  "install": {
+    "path": {
+      "js" : "app/assets/js/",
+      "sass" : "app/assets/sass"
+  },
+    "sources": {
+      "baseline" : [
+        "bower_components/baseline/assets/js/main.js",
+        "bower_components/baseline/assets/js/skel.min.js"
+      ]
+    }  
+  },
+  "devDependencies": {
+    "jquery": "~2.1.4"
+  }
+}
