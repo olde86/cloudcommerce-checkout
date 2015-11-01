@@ -53,9 +53,6 @@ App = {
 
         var data = App.Send('cart/info', data, function (data) {
 
-            $.model('order.currency').html(data.currency);
-
-
             Order.Set('currency',data);
             Order.Set('total_price',data);
 
@@ -74,41 +71,66 @@ App = {
 
 }
 
-Product = {
+// Model
 
-    model: 'product',
+Model = {
 
-    Set: function (value,dataSet) {
+    Set: function (value, data, callback, model) {
 
-        var data = dataSet[value];
+        var html = data[value];
        
-        //Also set product image alt text 
-        if(value == "locales_name")         
-          $.js('product.image').attr('rel', data);
+        callback();
 
-        console.log($.js('product.image').attr('rel'));
+        console.log(data.total_price);
 
-        $.model(Product.model + '.' + value ).html(data);
+        $.model( model + '.' + value ).html(html);
 
     }
 
 }
 
+
+// Product
+Product = {
+
+    model: 'product',
+
+    Set: function (value, data) {
+
+        if(value == "locales_name")         
+          this.SetLocalesNameAttribute(data[value]);
+
+        Model.Set(value,data,function() {
+
+        }, this.model);
+    },
+    
+    SetLocalesNameAttribute: function (data) {
+
+        $.js('product.image').attr('alt', data);
+
+    }
+
+}
+
+// Order
 Order = {
 
     model: 'order',
 
-    Set: function (value,dataSet) {
+    Set: function (value, data) {
 
-        var data = dataSet[value];
-        
         if(value == "total_price")         
-          data = Helper.Money(data);
+          data.total_price = this.SetTotalPriceAttribute(data[value])
 
-        console.log(data);
+        Model.Set(value,data,function() {
 
-        $.model(Order.model + '.' + value ).html(data);
+        }, this.model);
+    },
 
+    SetTotalPriceAttribute: function (data) {
+
+      return Helper.Money(data);
 
     }
 
@@ -128,7 +150,6 @@ App.Init();
 $(document).ready( function () {
 
   $.js('click-update').on('click', function () {
-    console.log('update');
     App.Init();
   });
 
