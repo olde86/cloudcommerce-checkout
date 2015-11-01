@@ -17,134 +17,150 @@ html(lang="en")
 
     // Header
     header#header
-      .pull-right
+      a(href="https://www.picture.com")  
+        img#logo(src="img/picturedotcom_trans.png")
+      nav
         span(href="#",data-model="order.currency")
         span(href="#",data-model="order.language")
-      img#logo(src="img/picturedotcom_trans.png")
 
     // Main
-    div#main.container
-
-      //Intro
-      .row
-        
-        //Progress bar
-        section(class="12u$").text-center
-          ul.actions
-            li: a(href="#") Product
-            li: a(href="#") Adress
-            li: a(href="#") Confirm
-            li: a(href="#") Payment
-
-
-        section(class="6u",data-template="address").template
-          h2 Address
-          input(type="hidden",data-js="address.id", data-model="address.id")
-          input(type="hidden",data-js="address.type", data-model="address.type")
-          .row.uniform 
-            div(class="12u$")
-              input(type="text",data-js="address.email", data-model="address.email", placeholder="Email")
-            div(class="12u$")
-              input(type="text",data-js="address.firstname", data-model="address.firstname", placeholder="Firstname")
-            div(class="12u$")
-              input(type="text",data-js="address.lastname", data-model="address.lastname", placeholder="Lastname")
-            div(class="12u$")
-              input(type="text",data-js="address.street1", data-model="address.street1", placeholder="street")
-            div(class="12u$")
-              input(type="text",data-js="address.zip", data-model="address.zip", placeholder="Zip")
-            div(class="12u$")
-              input(type="text",data-js="address.city", data-model="address.city", placeholder="City")
-            div(class="12u$")
-              input(type="text",data-js="address.country", data-model="address.country", placeholder="Country")
-            div
-              input(type="submit",data-js="address.submit", value="Save Address")
-          
-        
-        section(class="6u",data-template="voucher").template
-          h2 Add a voucher
-          .row.uniform
-            div(class="9u 12u$(small)")
-              input(type="text", data-js="voucher.value", placeholder="Voucher")
-            div(class="3u$ 12u$(small)")
-              input(type="submit", class="fit", data-js="voucher.submit", value="Add")
-
-        section(class="6u",data-template="confirm.order").template
-          h2 Confirm Your order
-          table.alt
-            thead
-              tr
-                th Description
-                th Price
-            tbody
-              tr
-                td Price
-                td: span(data-model="order.items_price")
-              tr
-                td Shipping
-                td: span(data-model="order.shipping_price")
-              tr
-                td Fee
-                td: span(data-model="order.fee_price")
-              tr
-                td Vat
-                td: span(data-model="order.vat_price")
-            tfoot
-              tr
-                td
-                td: span(data-model="order.total_price")
-
-        section(class="6u",data-template="confirm.address").template
-          h2 Confirm Your address
-          dl
-            dt Firstname
-            dd: span(data-model="address.firstname")
-            dt Lastname
-            dd: span(data-model="address.lastname")
-            dt Street
-            dd: span(data-model="address.street1")
-            dt Zip
-            dd: span(data-model="address.zip")
-            dt City
-            dd: span(data-model="address.city")
-            dt Country
-            dd: span(data-model="address.country")
-
-        section(class="6u",data-template="product").template
-          h2 Your product
-          div(data-model="product")
-            input(type="hidden",data-js="product.id", data-model="product.id")
-            input(type="hidden",data-js="product.product_id", data-model="product.product_id")
-            ul
-              li Retail price total
-                span(data-model="product.retail_price_total")
-              li Price
-                span(data-model="product.price")
-              li locales_name
-                span(data-model="product.locales_name")
-              li count
-                span(data-model="product.count")
-              li user_price_total
-                span(data-model="product.user_price_total")
-
-            ul(data-js="product.files")
-
-            div(data-js="product.options")
-
-            button(data-js="product-inc") Increment
-            span(data-model="product.count")
-            button(data-js="product-dec") Decrement
-
-          section(class="12u$")
-            .row
-              .4u
-                a(href="#") Choose more products
-              .4u.text-center
-                button(data-js="click-next") next
+    #content
+      div#main.container
+        .row
+          section(class="12u$").text-center
+            h1 Checkout
+        //Intro
+        .boxed: .row
+          //Progress bar
+          section(class="12u$").text-center
+            ul.actions
+              li: a(href="#") Product
+              li: a(href="#") Adress
+              li: a(href="#") Confirm
+              li: a(href="#") Payment
 
 
+          section(class="6u",data-template="address")
+
+            .template(data-template="product.spinner")
+              h2 Ammount
+              button(data-js="product-inc") Increment
+              span(data-model="product.count")
+              button(data-js="product-dec") Decrement
+
+              section(class="12u$")
+                .row
+                  .4u
+                    a(href="#") Choose more products
+                  .4u.text-center
+                    button(data-js="click-next") next
+              a.icon.fa-phone(data-js="click-update") opdater
+
+            .template(data-template="voucher")
+              h2 Add a voucher
+              .row.uniform
+                div(class="9u 12u$(small)")
+                  input(type="text", data-js="voucher.value", placeholder="Voucher")
+                div(class="3u$ 12u$(small)")
+                  input(type="submit", class="fit", data-js="voucher.submit", value="Add")
+
+            .template(data-template="address")
+              h2 Address
+              input(type="hidden",data-js="address.id", data-model="address.id")
+              input(type="hidden",data-js="address.type", data-model="address.type")
+              .row.uniform 
+                div(class="12u$")
+                  input(type="text",data-js="address.email", data-model="address.email", placeholder="Email")
+                div(class="6u")
+                  input(type="text",data-js="address.firstname", data-model="address.firstname", placeholder="Firstname")
+                div(class="6u$")
+                  input(type="text",data-js="address.lastname", data-model="address.lastname", placeholder="Lastname")
+                div(class="12u$")
+                  input(type="text",data-js="address.street1", data-model="address.street1", placeholder="Street")
+                div(class="4u")
+                  input(type="text",data-js="address.zip", data-model="address.zip", placeholder="Zip")
+                div(class="8u$")
+                  input(type="text",data-js="address.city", data-model="address.city", placeholder="City")
+                div(class="12u$")
+                  input(type="text",data-js="address.country", data-model="address.country", placeholder="Country")
+                div
+                  input(type="submit",data-js="address.submit", value="Save Address")
+
+            .template(data-template="confirm.address")
+              h2 Confirm Your address
+              table.alt: tbody
+                tr
+                  td Firstname
+                  td: span(data-model="address.firstname")
+                tr
+                  td Lastname
+                  td: span(data-model="address.lastname")
+                tr
+                  td Street
+                  td: span(data-model="address.street1")
+                tr
+                  td Zip
+                  td: span(data-model="address.zip")
+                tr
+                  td City
+                  td: span(data-model="address.city")
+                tr
+                  td Country
+                  td: span(data-model="address.country")
+            
+
+          section(class="6u")
+
+            .template(data-template="product")
+              h2 Your product
+              ul.images(data-js="product.files")
+              input(type="hidden",data-js="product.id", data-model="product.id")
+              input(type="hidden",data-js="product.product_id", data-model="product.product_id")
+              h2: span(data-model="product.locales_name")
+              table.alt
+                tbody
+                  tr
+                    td Price pr. item
+                    td: span(data-model="product.retail_price_total")
+                  tr
+                    td Count
+                    td: span(data-model="product.count")
+                tfoot
+                  tr
+                    td Total
+                    td: strong(data-model="product.user_price_total")
+
+              h2 Options
+              table.alt(data-js="product.options")
 
 
-          a.icon.fa-phone(data-js="click-update") opdater
+            .template(data-template="confirm.order")
+              h2 Confirm Your order
+              table.alt
+                thead
+                  tr
+                    th Description
+                    th Price
+                tbody
+                  tr
+                    td Price
+                    td: span(data-model="order.items_price")
+                  tr
+                    td Shipping
+                    td: span(data-model="order.shipping_price")
+                  tr
+                    td Fee
+                    td: span(data-model="order.fee_price")
+                  tr
+                    td Vat
+                    td: span(data-model="order.vat_price")
+                tfoot
+                  tr
+                    td
+                    td: span(data-model="order.total_price")
+
+
+
 
   // Scripts
   script(src="assets/jquery/jquery.js")

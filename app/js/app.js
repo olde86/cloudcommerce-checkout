@@ -68,20 +68,22 @@ App = {
 
     Init: function () {
 
-        //Set visible tempaltes
-        $.template('confirm.order').show();
-        $.template('confirm.address').show();
-        $.template('address').show();
-        $.template('order').show();
-        $.template('product').show();
-        $.template('voucher').show();
-
         var data = App.Send('cart/info', this.GetParams(), function (data) {
 
             // Set default Addres type
             $.js('address.type').val(App.Config.Delivery);
             
             App.Seed(data);
+            App.SetState(data.state);
+
+            //Set visible tempaltes
+            $.template('confirm.order').show();
+            $.template('confirm.address').show();
+            $.template('address').show();
+            $.template('order').show();
+            $.template('product').show();
+            $.template('product.spinner').show();
+            $.template('voucher').show();
           
         });
     },
@@ -112,6 +114,17 @@ App = {
 
 
     // Getters and setters
+
+    State: null,
+
+    GetState: function ()
+    {
+        return this.State;
+    },
+
+    SetState: function (value) {
+        this.State = value;
+    },
 
     Params: null,
 
@@ -174,6 +187,10 @@ Model = {
         if( $.inArray(value, model.prices) != -1 )
           data[value] = this.SetPriceAttribute(data[value]);
 
+        // If the value is false, set it to an empty string
+        if(data[value] == false)
+          data[value] == "";
+
         var html = data[value];
        
         if(callback)
@@ -208,7 +225,7 @@ Product = {
 
     model: 'product',
 
-    prices: ['user_price_total','user_retail_total'],
+    prices: ['user_price_total','retail_price_total'],
 
     Set: function (value, data) { Model.Set(value, data, null, this); },
     
@@ -235,10 +252,10 @@ Product = {
       
         $.each(data, function (key , item ){
           $.js('product.options').append(
-            '<ul>' +
-            '<li>' + item.locales_name + '</li>' +
-            '<li>' + item.count + '</li>' +
-            '</ul>'
+            '<tr>' +
+            '<td>' + item.locales_name + '</td>' +
+            '<td>' + item.count + '</td>' +
+            '</tr>'
           );
         });
 
@@ -330,7 +347,6 @@ $(document).ready( function () {
   $.js('click-update').on('click', function () {
     App.Init();
   });
-
 
   $.js('product-inc').on('click', function () {
 

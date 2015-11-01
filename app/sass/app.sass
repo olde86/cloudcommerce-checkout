@@ -1,4 +1,5 @@
 @import baseline/main.scss
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC)
 
 // Utitilty classes
 .text-center
@@ -8,27 +9,65 @@
 .template
   display: none
 
+html,body
+  width: 100%
+  height: 100%
 
 body
-  background: url('../img/bg-resnap.jpg')
-  padding-top: 200px
-  -webkit-background-size: cover
-  -moz-background-size: cover
-  -o-background-size: cover
-  background-size: cover
-  
+  position: relative
+  background: rgba(0, 0, 0, 0) url("https://s3-eu-west-1.amazonaws.com/rseditor/bg-resnap.jpg") fixed center center / cover
+  overflow: hidden
+
+h1, h2, h3, h4, h5
+  color: #404c5d
+  font-family: "Amatic SC",cursive
+
+h1
+  font-size: 3em
+
+ul.images
+  list-style: none
+  padding: 0
+  li
+    padding: 0
+    text-align: center
+    img
+      width: 200px
 
 header#header
-  background: #FFF
+  background: #f9f9f9
   height: 70px
   line-height: 70px
   text-align: center
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1)
+  position: absolute
+  top: 0px
+  left: 0px
+  nav
+    position: absolute
+    top: 0px
+    right: 0px
+  a
+    padding: 5px
+    height: 100%
+    margin-right:  25px
   img#logo
+    height: 100%
   span 
     margin-left: 10px
     color: #333
 
-#main
-  background: #FFF
-  padding: 60px
+#content
+  padding-top: 40px
+  width: 100%
+  height: 100%
+  overflow: scroll
+
+.boxed 
+  margin-bottom: 200px
+  padding: 40px
+  background: #fbfbfb linear-gradient(to bottom, #fbfbfb 0%, #fbfbfb 100%) repeat-x scroll 0 0
+  border: 1px solid #c8c8c8
+  border-radius: 10px
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  color: #8f8f8f
