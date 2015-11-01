@@ -2168,12 +2168,14 @@ button,
   .spinner:hover {
     border-color: #5AA6ED; }
   .spinner span {
+    width: 50px;
     color: #CCC;
     cursor: pointer;
     padding: 5px 10px;
     font-size: 1.4em;
     float: left;
-    background-color: #F3F3F3; }
+    background-color: #F3F3F3;
+    text-align: center; }
     .spinner span:hover {
       background-color: #48576d; }
     .spinner span.count {
@@ -2181,7 +2183,6 @@ button,
       color: #333;
       cursor: auto;
       width: 100px;
-      text-align: center;
       border-left: 1px solid #DADADA;
       border-right: 1px solid #DADADA; }
 

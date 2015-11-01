@@ -32,7 +32,7 @@
             <section data-template="address" class="6u">
               <div data-template="product.spinner" class="template">
                 <h2>Ammount</h2>
-                <div class="spinner"><span data-js="product-inc">+</span><span data-model="product.count" class="count"></span><span data-js="product-dec">-</span></div>
+                <div class="spinner"><span data-js="product-dec">-</span><span data-model="product.count" class="count"></span><span data-js="product-inc">+</span></div>
               </div>
               <div data-template="voucher" class="template">
                 <h2>Add a voucher</h2>
