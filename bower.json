@@ -10,19 +10,25 @@
   "homepage": "http://www.cloudcommerce.com",
   "private": true,
   "dependencies": {
+    "accounting.js": "~0.4.1",
     "baseline": "skel-baseline#~3.0.0"
   },
   "install": {
     "path": {
-      "js" : "app/assets/js/",
-      "sass" : "app/assets/sass"
-  },
+      "js": "app/assets",
+      "sass": "app/sass",
+      "scss": "app/sass",
+      "css": "app/css"
+    },
     "sources": {
-      "baseline" : [
+      "baseline": [
         "bower_components/baseline/assets/js/main.js",
-        "bower_components/baseline/assets/js/skel.min.js"
+        "bower_components/baseline/assets/js/skel.min.js",
+        "bower_components/baseline/assets/sass/**",
+        "bower_components/baseline/assets/fonts/**",
+        "bower_components/baseline/assets/css/font-awesome.min.css"
       ]
-    }  
+    }
   },
   "devDependencies": {
     "jquery": "~2.1.4"

@@ -1,0 +1,92 @@
+doctype html
+html(lang="en")
+  head
+    title Cloud checkout
+
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/css/app.css")
+
+  body
+
+    // Header
+    header#header
+      h1: a(href="#") Baseline
+      a(href="#") Login
+      a(href="#") Menu
+
+    // Main
+    div#main.container
+
+      //Intro
+      .row
+        
+        //Progress bar
+        section(class="12u$").text-center
+          ul.actions
+            li: a(href="#") Product
+            li: a(href="#") Adress
+            li: a(href="#") Confirm
+            li: a(href="#") Payment
+
+        section(class="6u 12u$(medium)")
+          h2 Choose ammount
+          //Todo Amount picker
+          table
+            thead
+              tr
+                th Elements
+                th Discount
+                th Price pr. item
+            tbody
+              tr
+                td 10 or more
+                td 10% discount
+                td 13,50
+              tr
+                td 50 or more
+                td 10% discount
+                td 12,75
+              tr
+                td 100 or more
+                td 10% discount
+                td 12,00
+
+        section(class="6u 12u$(medium)")
+          h2 Your order
+          hr
+          p.pull-right
+            span(data-model="order.total_price")
+            span(data-model="order.currency")
+
+
+
+        section(class="6u 12u$(medium)")
+          h2 Your product
+          div(data-model="product")
+            h3(data-model="product.locales_name")
+            img(data-js="product.image", alt="")
+            span(data-model="product.price")
+            button(data-js="product-inc", rel="21") Increment
+            span(data-model="product.count")
+            button(data-js="product-dec", rel="21") Decrement
+
+          section(class="12u$")
+            .row
+              .4u
+                a(href="#") Choose more products
+              .4u.text-center
+                button(data-js="click-next") next
+
+
+
+
+          a.icon.fa-phone(data-js="click-update") opdater
+
+  // Scripts
+  script(src="/assets/jquery/jquery.js")
+  script(src="/assets/baseline/skel.min.js")
+  script(src="/assets/baseline/main.js")
+  script(src="/assets/accounting.js/accounting.js")
+  script(src="/js/app.js")
+
