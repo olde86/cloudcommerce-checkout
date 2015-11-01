@@ -31,30 +31,15 @@ html(lang="en")
             h1 Checkout
         //Intro
         .boxed: .row
-          //Progress bar
-          section(class="12u$").text-center
-            ul.actions
-              li: a(href="#") Product
-              li: a(href="#") Adress
-              li: a(href="#") Confirm
-              li: a(href="#") Payment
-
 
           section(class="6u",data-template="address")
 
             .template(data-template="product.spinner")
               h2 Ammount
-              button(data-js="product-inc") Increment
-              span(data-model="product.count")
-              button(data-js="product-dec") Decrement
-
-              section(class="12u$")
-                .row
-                  .4u
-                    a(href="#") Choose more products
-                  .4u.text-center
-                    button(data-js="click-next") next
-              a.icon.fa-phone(data-js="click-update") opdater
+              div.spinner
+                span(data-js="product-inc") +
+                span(data-model="product.count").count
+                span(data-js="product-dec") -
 
             .template(data-template="voucher")
               h2 Add a voucher
@@ -158,6 +143,13 @@ html(lang="en")
                   tr
                     td
                     td: span(data-model="order.total_price")
+
+
+          section(class="12u$")
+            .template(data-template="product")
+              a(href="#") Choose more products
+              button(data-js="click-next") next
+              a.icon.fa-phone(data-js="click-update") opdater
 
 
 

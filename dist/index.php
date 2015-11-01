@@ -29,28 +29,10 @@
         <!--Intro-->
         <div class="boxed">
           <div class="row">
-            <!--Progress bar-->
-            <section class="12u$ text-center">
-              <ul class="actions">
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Adress</a></li>
-                <li><a href="#">Confirm</a></li>
-                <li><a href="#">Payment</a></li>
-              </ul>
-            </section>
             <section data-template="address" class="6u">
               <div data-template="product.spinner" class="template">
                 <h2>Ammount</h2>
-                <button data-js="product-inc">Increment</button><span data-model="product.count"></span>
-                <button data-js="product-dec">Decrement</button>
-                <section class="12u$">
-                  <div class="row">
-                    <div class="4u"><a href="#">Choose more products</a></div>
-                    <div class="4u text-center">
-                      <button data-js="click-next">next</button>
-                    </div>
-                  </div>
-                </section><a data-js="click-update" class="icon fa-phone">opdater</a>
+                <div class="spinner"><span data-js="product-inc">+</span><span data-model="product.count" class="count"></span><span data-js="product-dec">-</span></div>
               </div>
               <div data-template="voucher" class="template">
                 <h2>Add a voucher</h2>
@@ -188,6 +170,11 @@
                     </tr>
                   </tfoot>
                 </table>
+              </div>
+            </section>
+            <section class="12u$">
+              <div data-template="product" class="template"><a href="#">Choose more products</a>
+                <button data-js="click-next">next</button><a data-js="click-update" class="icon fa-phone">opdater</a>
               </div>
             </section>
           </div>

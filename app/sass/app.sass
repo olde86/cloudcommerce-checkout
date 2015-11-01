@@ -34,6 +34,39 @@ ul.images
     img
       width: 200px
 
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button,
+.button
+  background-color: #404c5d
+  &:hover
+    background-color: #48576d
+
+.spinner
+  display: inline-block
+  border: 2px solid #DADADA
+  border-radius: 4px
+  &:hover
+    border-color: #5AA6ED
+  span
+    color: #CCC
+    cursor: pointer
+    padding: 5px 10px
+    font-size: 1.4em
+    float: left
+    background-color: #F3F3F3
+    &:hover
+      background-color: #48576d
+    &.count
+      background-color: transparent
+      color: #333
+      cursor: auto
+      width: 100px
+      text-align: center
+      border-left: 1px solid #DADADA
+      border-right: 1px solid #DADADA
+
 header#header
   background: #f9f9f9
   height: 70px
@@ -61,7 +94,7 @@ header#header
   padding-top: 40px
   width: 100%
   height: 100%
-  overflow: scroll
+  overflow-y: scroll
 
 .boxed 
   margin-bottom: 200px
