@@ -12,15 +12,27 @@ module.exports = function ( grunt )
         }
       }
     },
-    jade: {
-      dist: {
-        files:  [{
-          expand: true,
-          cwd: 'app/jade/',
-          src: ['**/*.jade'],
-          dest: 'dist/',
-          ext: '.html'
-        }]
+//    jade: {
+//      dist: {
+//        files:  [{
+//          expand: true,
+//          cwd: 'app/jade/',
+//          src: ['**/*.jade'],
+//          dest: 'dist/',
+//          ext: '.html'
+//        }]
+//      }
+//    },
+    jadephp: {
+      options: {
+        pretty: true
+      },
+      compile: {
+        expand: true,
+        cwd: 'app/jade/',
+        src: ['**/*.jade'],
+        dest: 'dist/',
+        ext: '.php'
       }
     },
     copy: {
@@ -41,6 +53,12 @@ module.exports = function ( grunt )
         cwd: 'app/css/',
         src: '**',
         dest: 'dist/css/'
+      },
+      img: {
+        expand: true,
+        cwd: 'app/img/',
+        src: '**',
+        dest: 'dist/img/'
       }
     },
     watch: {
@@ -48,20 +66,26 @@ module.exports = function ( grunt )
         files: ['app/sass/**/*.sass'],
         tasks: ['sass']
       },
-      jade: {
+//      jade: {
+//        files: ['app/jade/**/*.jade'],
+//        tasks: ['jade']
+//      },
+      jadephp: {
         files: ['app/jade/**/*.jade'],
-        tasks: ['jade']
+        tasks: ['jadephp']
       },
       copy: {
         files: [
           'app/assets/**',
           'app/js/**',
-          'app/css/**'
+          'app/css/**',
+          'app/img/**'
           ],
         tasks: [
           'copy:assets',
           'copy:js',
-          'copy:css'
+          'copy:css',
+          'copy:img'
           ]
       }
     }
@@ -70,8 +94,9 @@ module.exports = function ( grunt )
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-jade');
+//  grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-jade-php');
 
-  grunt.registerTask('default', [ 'sass', 'jade', 'copy', 'watch']);
+  grunt.registerTask('default', [ 'sass', 'jadephp', 'copy', 'watch']);
 }
