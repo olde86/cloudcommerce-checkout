@@ -6,7 +6,16 @@
   text-align: center
 .pull-right
   float: right
+.pull-left
+  float: left
+.clear
+  clear: both
+section
+  &.bully
+    padding-top: 28px
+
 .template
+  margin-bottom: 40px
   display: none
 
 html,body
@@ -22,17 +31,59 @@ h1, h2, h3, h4, h5
   color: #404c5d
   font-family: "Amatic SC",cursive
 
+
 h1
   font-size: 3em
 
-ul.images
+ul
   list-style: none
   padding: 0
   li
     padding: 0
-    text-align: center
-    img
-      width: 200px
+  &.steps
+    display: inline-block
+    color: #CCC
+    font-family: "Amatic SC",cursive
+    font-size: 4em
+    margin-bottom: 70px
+    li
+      margin: 0px 20px
+      float: left
+      &.selected
+        color: #404c5d
+  &.images
+    li
+      text-align: center
+      img
+        max-width: 100%
+
+.flex
+  width: 100%
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  h2
+    margin: 0 20px 0 0
+    align-self: flex-start
+
+.discount
+  margin-left: 20px
+  font-family: Arial, Helvetica, sans-serif
+  font-weight: bold
+
+  color: #F1B366
+
+strong
+  font-size: 1.4em
+table
+  &.alt
+    td:first-child
+      border-right: none
+      width: 50%
+  tbody
+    tr:nth-child(2n+1)
+      background-color: transparent
 
 input[type="submit"],
 input[type="reset"],

@@ -19,7 +19,7 @@ html(lang="en")
     header#header
       a(href="https://www.picture.com")  
         img#logo(src="img/picturedotcom_trans.png")
-      nav
+      nav(style="display:none;")
         span(href="#",data-model="order.currency")
         span(href="#",data-model="order.language")
 
@@ -28,20 +28,33 @@ html(lang="en")
       div#main.container
         .row
           section(class="12u$").text-center
-            h1 Checkout
+            ul.steps
+              li(data-view="Product") 1. Product
+              li(data-view="Address") 2. Address
+              li(data-View="Confirm") 3. Confirm
+              li(data-view="Success") 4. Success
+           
         //Intro
         .boxed: .row
 
-          section(class="6u",data-template="address")
+          section(class="6u")
+
+            .template(data-template="product.image")
+              h1: span(data-model="product.locales_name")
+              ul.images(data-js="product.files")
+              input(type="hidden",data-js="product.id", data-model="product.id")
+              input(type="hidden",data-js="product.product_id", data-model="product.product_id")
+
 
             .template(data-template="product.spinner")
-              h2 Ammount
-              div.spinner
-                span(data-js="product-dec") -
-                span(data-model="product.count").count
-                span(data-js="product-inc") +
+              .flex
+                h2 Ammount
+                div.spinner
+                  span(data-js="product-dec") -
+                  span(data-model="product.count").count
+                  span(data-js="product-inc") +
 
-            .template(data-template="voucher")
+            .template(data-template="voucher.add")
               h2 Add a voucher
               .row.uniform
                 div(class="9u 12u$(small)")
@@ -49,8 +62,12 @@ html(lang="en")
                 div(class="3u$ 12u$(small)")
                   input(type="submit", class="fit", data-js="voucher.submit", value="Add")
 
+            .template(data-template="voucher.list")
+              h2 Your voucher:
+                span(data-model="order.voucher").discount
+
             .template(data-template="address")
-              h2 Address
+              h1 Enter your address
               input(type="hidden",data-js="address.id", data-model="address.id")
               input(type="hidden",data-js="address.type", data-model="address.type")
               .row.uniform 
@@ -67,9 +84,15 @@ html(lang="en")
                 div(class="8u$")
                   input(type="text",data-js="address.city", data-model="address.city", placeholder="City")
                 div(class="12u$")
-                  input(type="text",data-js="address.country", data-model="address.country", placeholder="Country")
-                div
-                  input(type="submit",data-js="address.submit", value="Save Address")
+                  select(data-js="address.country")
+
+
+          section(class="6u").bully
+
+
+            .template(data-template="product.options")
+              h2 Product options
+              table.alt(data-js="product.options")
 
             .template(data-template="confirm.address")
               h2 Confirm Your address
@@ -94,31 +117,6 @@ html(lang="en")
                   td: span(data-model="address.country")
             
 
-          section(class="6u")
-
-            .template(data-template="product")
-              h2 Your product
-              ul.images(data-js="product.files")
-              input(type="hidden",data-js="product.id", data-model="product.id")
-              input(type="hidden",data-js="product.product_id", data-model="product.product_id")
-              h2: span(data-model="product.locales_name")
-              table.alt
-                tbody
-                  tr
-                    td Price pr. item
-                    td: span(data-model="product.retail_price_total")
-                  tr
-                    td Count
-                    td: span(data-model="product.count")
-                tfoot
-                  tr
-                    td Total
-                    td: strong(data-model="product.user_price_total")
-
-              h2 Options
-              table.alt(data-js="product.options")
-
-
             .template(data-template="confirm.order")
               h2 Confirm Your order
               table.alt
@@ -130,27 +128,51 @@ html(lang="en")
                   tr
                     td Price
                     td: span(data-model="order.items_price")
+                  tr(data-js="toggle.discount")
+                    td Discount
+                    td: span(data-model="order.total_discount")
                   tr
                     td Shipping
                     td: span(data-model="order.shipping_price")
-                  tr
-                    td Fee
-                    td: span(data-model="order.fee_price")
                   tr
                     td Vat
                     td: span(data-model="order.vat_price")
                 tfoot
                   tr
-                    td
-                    td: span(data-model="order.total_price")
+                    td Total
+                    td: strong(data-model="order.total_price")
 
+            .template(data-template="product.details")
+              h2 Product Details
+              table.alt
+                tbody
+                  tr
+                    td Price pr. item
+                    td: span(data-model="product.retail_price_total")
+                  tr(data-js="toggle.discount")
+                    td Discount
+                    td: span(data-model="order.total_discount")
+                  tr
+                    td Count
+                    td: span(data-model="product.count")
+                tfoot
+                  tr
+                    td: strong Total
+                    td: strong(data-model="product.user_price_total")
 
           section(class="12u$")
-            .template(data-template="product")
-              a(href="#") Choose more products
-              button(data-js="click-next") next
-              a.icon.fa-phone(data-js="click-update") opdater
 
+            .template(data-template="success").text-center
+              h1 SUCCESS
+
+            .template(data-template="404").text-center
+              h1 404 Not Found
+
+            a.template(data-template="action-back",data-js="click-back").button.big.pull-left Back
+            a.template(data-template="action-next",data-js="click-next").button.big.pull-right Next
+            a.template(data-template="action-home",data-js="click-home").button.big.pull-right Home
+
+            div(data-js="error")
 
 
 

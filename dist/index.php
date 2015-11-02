@@ -16,25 +16,38 @@
   <body>
     <!-- Header-->
     <header id="header"><a href="https://www.picture.com"> <img id="logo" src="img/picturedotcom_trans.png"></a>
-      <nav><span href="#" data-model="order.currency"></span><span href="#" data-model="order.language"></span></nav>
+      <nav style="display:none;"><span href="#" data-model="order.currency"></span><span href="#" data-model="order.language"></span></nav>
     </header>
     <!-- Main-->
     <div id="content">
       <div id="main" class="container">
         <div class="row">
           <section class="12u$ text-center">
-            <h1>Checkout</h1>
+            <ul class="steps">
+              <li data-view="Product">1. Product</li>
+              <li data-view="Address">2. Address</li>
+              <li data-View="Confirm">3. Confirm</li>
+              <li data-view="Success">4. Success</li>
+            </ul>
           </section>
         </div>
         <!--Intro-->
         <div class="boxed">
           <div class="row">
-            <section data-template="address" class="6u">
-              <div data-template="product.spinner" class="template">
-                <h2>Ammount</h2>
-                <div class="spinner"><span data-js="product-dec">-</span><span data-model="product.count" class="count"></span><span data-js="product-inc">+</span></div>
+            <section class="6u">
+              <div data-template="product.image" class="template">
+                <h1><span data-model="product.locales_name"></span></h1>
+                <ul data-js="product.files" class="images"></ul>
+                <input type="hidden" data-js="product.id" data-model="product.id">
+                <input type="hidden" data-js="product.product_id" data-model="product.product_id">
               </div>
-              <div data-template="voucher" class="template">
+              <div data-template="product.spinner" class="template">
+                <div class="flex">
+                  <h2>Ammount</h2>
+                  <div class="spinner"><span data-js="product-dec">-</span><span data-model="product.count" class="count"></span><span data-js="product-inc">+</span></div>
+                </div>
+              </div>
+              <div data-template="voucher.add" class="template">
                 <h2>Add a voucher</h2>
                 <div class="row uniform">
                   <div class="9u 12u$(small)">
@@ -45,8 +58,11 @@
                   </div>
                 </div>
               </div>
+              <div data-template="voucher.list" class="template">
+                <h2>Your voucher:<span data-model="order.voucher" class="discount"></span></h2>
+              </div>
               <div data-template="address" class="template">
-                <h2>Address</h2>
+                <h1>Enter your address</h1>
                 <input type="hidden" data-js="address.id" data-model="address.id">
                 <input type="hidden" data-js="address.type" data-model="address.type">
                 <div class="row uniform"> 
@@ -69,12 +85,15 @@
                     <input type="text" data-js="address.city" data-model="address.city" placeholder="City">
                   </div>
                   <div class="12u$">
-                    <input type="text" data-js="address.country" data-model="address.country" placeholder="Country">
-                  </div>
-                  <div>
-                    <input type="submit" data-js="address.submit" value="Save Address">
+                    <select data-js="address.country"></select>
                   </div>
                 </div>
+              </div>
+            </section>
+            <section class="6u bully">
+              <div data-template="product.options" class="template">
+                <h2>Product options</h2>
+                <table data-js="product.options" class="alt"></table>
               </div>
               <div data-template="confirm.address" class="template">
                 <h2>Confirm Your address</h2>
@@ -107,35 +126,6 @@
                   </tbody>
                 </table>
               </div>
-            </section>
-            <section class="6u">
-              <div data-template="product" class="template">
-                <h2>Your product</h2>
-                <ul data-js="product.files" class="images"></ul>
-                <input type="hidden" data-js="product.id" data-model="product.id">
-                <input type="hidden" data-js="product.product_id" data-model="product.product_id">
-                <h2><span data-model="product.locales_name"></span></h2>
-                <table class="alt">
-                  <tbody>
-                    <tr>
-                      <td>Price pr. item</td>
-                      <td><span data-model="product.retail_price_total"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Count</td>
-                      <td><span data-model="product.count"></span></td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td>Total</td>
-                      <td><strong data-model="product.user_price_total"></strong></td>
-                    </tr>
-                  </tfoot>
-                </table>
-                <h2>Options</h2>
-                <table data-js="product.options" class="alt"></table>
-              </div>
               <div data-template="confirm.order" class="template">
                 <h2>Confirm Your order</h2>
                 <table class="alt">
@@ -150,13 +140,13 @@
                       <td>Price</td>
                       <td><span data-model="order.items_price"></span></td>
                     </tr>
+                    <tr data-js="toggle.discount">
+                      <td>Discount</td>
+                      <td><span data-model="order.total_discount"></span></td>
+                    </tr>
                     <tr>
                       <td>Shipping</td>
                       <td><span data-model="order.shipping_price"></span></td>
-                    </tr>
-                    <tr>
-                      <td>Fee</td>
-                      <td><span data-model="order.fee_price"></span></td>
                     </tr>
                     <tr>
                       <td>Vat</td>
@@ -165,17 +155,46 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td></td>
-                      <td><span data-model="order.total_price"></span></td>
+                      <td>Total</td>
+                      <td><strong data-model="order.total_price"></strong></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <div data-template="product.details" class="template">
+                <h2>Product Details</h2>
+                <table class="alt">
+                  <tbody>
+                    <tr>
+                      <td>Price pr. item</td>
+                      <td><span data-model="product.retail_price_total"></span></td>
+                    </tr>
+                    <tr data-js="toggle.discount">
+                      <td>Discount</td>
+                      <td><span data-model="order.total_discount"></span></td>
+                    </tr>
+                    <tr>
+                      <td>Count</td>
+                      <td><span data-model="product.count"></span></td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td><strong>Total</strong></td>
+                      <td><strong data-model="product.user_price_total"></strong></td>
                     </tr>
                   </tfoot>
                 </table>
               </div>
             </section>
             <section class="12u$">
-              <div data-template="product" class="template"><a href="#">Choose more products</a>
-                <button data-js="click-next">next</button><a data-js="click-update" class="icon fa-phone">opdater</a>
+              <div data-template="success" class="template text-center">
+                <h1>SUCCESS</h1>
               </div>
+              <div data-template="404" class="template text-center">
+                <h1>404 Not Found</h1>
+              </div><a data-template="action-back" data-js="click-back" class="template button big pull-left">Back</a><a data-template="action-next" data-js="click-next" class="template button big pull-right">Next</a><a data-template="action-home" data-js="click-home" class="template button big pull-right">Home</a>
+              <div data-js="error"></div>
             </section>
           </div>
         </div>

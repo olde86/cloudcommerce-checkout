@@ -3,6 +3,10 @@ $.template = function(el){
     return $('[data-template="' + el + '"]')
 };
 
+$.view = function(el){
+    return $('[data-view="' + el + '"]')
+};
+
 $.js = function(el){
     return $('[data-js="' + el + '"]')
 };
@@ -24,6 +28,7 @@ App = {
 
     Config : {
 
+        HomeUrl: 'https://www.picture.com',
         BaseUrl: 'https://www.cloudprinter.com',
         Namespace: '2.0',
 
@@ -31,11 +36,11 @@ App = {
             Endpoint : "payment",
             
             Url : function () {
-              return this.Config.BaseUrl + '/' + 
-                     this.Config.Namespace + '/' + 
-                     this.Config.Payment.Endpoint + '/' + 
-                     this.Config.shopKey + '/' + 
-                     this.Config.Reference;
+              return App.Config.BaseUrl + '/' + 
+                     App.Config.Namespace + '/' + 
+                     App.Config.Payment.Endpoint + '/' + 
+                     App.Config.shopKey + '/' + 
+                     App.Config.Reference;
             }
 
         },
@@ -51,13 +56,16 @@ App = {
 
     Send : function (endpoint,data,handleData) {
 
+        // Clear error message
+        $.js('error').html();
+
         $.ajax({
           url: App.Api.Host + "/" + App.Api.Namespace + "/" + endpoint ,
           type: "POST",
           data: JSON.stringify(this.GetParams()),
           dataType: "json",
-          success: function(data) {
-            handleData(data);
+          success: function(data,statusText,xhr) {
+            handleData(data,statusText,xhr);
           }
         });
 
@@ -68,7 +76,7 @@ App = {
 
     Init: function () {
 
-        var data = App.Send('cart/info', this.GetParams(), function (data) {
+        var data = App.Send('cart/info', this.GetParams(), function (data, statusText, xhr) {
 
             // Set default Addres type
             $.js('address.type').val(App.Config.Delivery);
@@ -76,16 +84,23 @@ App = {
             App.Seed(data);
             App.SetState(data.state);
 
-            //Set visible tempaltes
-            $.template('confirm.order').show();
-            $.template('confirm.address').show();
-            $.template('address').show();
-            $.template('order').show();
-            $.template('product').show();
-            $.template('product.spinner').show();
-            $.template('voucher').show();
-          
+            if( App.State == 1 )
+              App.View.Product(data);
+            else if( App.State == 2 ) 
+              App.View.Success();
+            else
+              App.View.NotFound();
+
         });
+
+        var data = App.Send('cart/countries', this.GetParams(), function (data, statusText, xhr) {
+          
+          $.each(data, function (key, value) {
+              $.js('address.country').append('<option value="' + value.name + '">' + value.note+ '</option>');
+          });
+
+        });
+        
     },
 
     Seed: function (data) {
@@ -109,6 +124,134 @@ App = {
                 Address.Populate(address);
 
             });
+        }
+    },
+
+    View: {
+
+        Current: null,
+
+        Reset: function () {
+            $('.template').hide();
+            $('.steps li').removeClass('selected')
+        },
+
+        Test: function (view) {
+
+            App.View.Reset();
+           
+            if(view == 'Product')
+            {
+                if(App.State == 1)
+                  return true;
+            }
+            else if(view == 'Address')
+            {
+                if(App.State == 1)
+                  return true;
+            }
+            else if(view == 'Confirm')
+            {
+                if(App.State == 1 &&
+                    $.js('address.email').val() != "" &&
+                    $.js('address.firstname').val() != "" &&
+                    $.js('address.lastname').val() != "" &&
+                    $.js('address.street1').val() != "" &&
+                    $.js('address.zip').val() != "" &&
+                    $.js('address.city').val() != "" &&
+                    $.js('address.country').val() != "")
+                  return true;
+              
+            }
+            else if(view == 'Success')
+            {
+                console.log(146);
+                if(App.State == 2)
+                  return true;
+            }
+            
+            return false;
+
+        },
+
+        Product: function (data) {
+            data = data || false;
+            if(App.View.Test('Product'))
+            {
+                App.View.Current = "Product";
+                $.view('Product').addClass('selected');
+                $.template('product.spinner').show();
+                $.template('product.image').show();
+                $.template('product.details').show();
+                $.template('product.options').show();
+                $.template('action-next').show();
+                if(data && data.voucher)
+                  $.template('voucher.list').show();
+                else
+                  $.template('voucher.add').show();
+            }
+            else
+            {
+                App.View.NotFound();
+            }
+
+        },
+        
+        Address: function () {
+            if(App.View.Test('Address'))
+            {
+                App.View.Current = "Address";
+                $.view('Address').addClass('selected');
+                $.template('address').show();
+                $.template('product.details').show();
+                $.template('product.options').show();
+                $.template('action-back').show();
+                $.template('action-next').show();
+            }
+            else
+            {
+                App.View.Product();
+            }
+
+
+        },
+
+        Confirm: function () {
+            if(App.View.Test('Confirm'))
+            {
+                App.View.Current = "Confirm";
+                $.view('Confirm').addClass('selected');
+                $.template('product.image').show();
+                $.template('confirm.order').show();
+                $.template('confirm.address').show();
+                $.template('action-back').show();
+                $.template('action-next').show();
+            }
+            else
+            {
+                App.View.Address();
+            }
+
+
+        },
+
+        Success: function () {
+            if(App.View.Test('Success'))
+            {
+                App.View.Current = "Success";
+                $.view('Success').addClass('selected');
+                $.template('success').show();
+                $.template('action-home').show();
+            }
+            else
+            {
+                App.View.Product();
+            }
+        },
+        
+        NotFound : function () {
+            App.View.Current = "NotFound";
+            $.template('404').show();
         }
     },
 
@@ -188,8 +331,9 @@ Model = {
           data[value] = this.SetPriceAttribute(data[value]);
 
         // If the value is false, set it to an empty string
+
         if(data[value] == false)
-          data[value] == "";
+          data[value] = "";
 
         var html = data[value];
        
@@ -279,9 +423,17 @@ Order = {
 
     model: 'order',
 
-    prices: ['items_price','total_price','shipping_price','fee_price','vat_price'],
+    prices: ['items_price','total_price','shipping_price','fee_price','vat_price','total_discount'],
 
-    Set: function (value, data) { Model.Set(value,data, null, this); },
+    Set: function (value, data) {
+
+      if(value == 'total_discount' && data[value] == false)
+        $.js('toggle.discount').hide();
+      else
+        $.js('toggle.discount').show();
+
+      Model.Set(value,data, null, this);
+    },
 
     Populate : function (data) {
         
@@ -296,8 +448,10 @@ Order = {
         Order.Set('items_price',data);
         Order.Set('total_price',data);
         Order.Set('shipping_price',data);
-        Order.Set('fee_price',data);
+        //Order.Set('fee_price',data);
         Order.Set('vat_price',data);
+        Order.Set('total_discount',data);
+        Order.Set('voucher',data);
 
     }
 
@@ -308,7 +462,16 @@ Address = {
 
     model: 'address',
 
-    Set: function (value, data) { Model.Set(value,data, null, this); },
+    Set: function (value, data) {
+
+      if(value == 'country' && data[value] == false)
+        $.js('address.country').val('US');
+      else
+        $.js('address.country').val(data[value]);
+    
+      Model.Set(value,data, null, this);
+
+    },
 
     Populate : function (data) {
         
@@ -344,8 +507,65 @@ App.Init();
 
 $(document).ready( function () {
 
-  $.js('click-update').on('click', function () {
-    App.Init();
+  $.js('click-back').on('click', function () {
+
+      if(App.View.Current == 'Address')
+      {
+          App.View.Product();
+      }
+      else if(App.View.Current == 'Confirm')
+      {
+          App.View.Address();
+      }
+  });
+
+  $.js('click-next').on('click', function () {
+
+      if(App.View.Current == 'Product')
+      {
+          App.View.Address();
+      }
+      else if(App.View.Current == 'Address')
+      {
+          App.SetParam("id",$.js('address.id').val());
+          App.SetParam("type",$.js('address.type').val());
+          App.SetParam("email",$.js('address.email').val());
+          App.SetParam("firstname",$.js('address.firstname').val());
+          App.SetParam("lastname",$.js('address.lastname').val());
+          App.SetParam("street1",$.js('address.street1').val());
+          App.SetParam("zip",$.js('address.zip').val());
+          App.SetParam("city",$.js('address.city').val());
+          App.SetParam("country",$.js('address.country').val());
+          App.SetParam("company",'');
+
+          var data = App.Send('cart/address/add', App.GetParams(), function (data,statusText,xhr) {
+
+              if(xhr.status == 200)
+              {
+                App.Seed(data);
+                App.View.Confirm();
+              }
+              else
+              {
+                  $.js('error').html("Address.Error");
+              }
+                
+          });
+      }
+      else if(App.View.Current == 'Confirm')
+      {
+
+        window.location.href = App.Config.Payment.Url();
+        
+      }
+
+  });
+
+  $.js('click-home').on('click', function () {
+      if(App.View.Current == 'Success')
+      {
+          window.location.href = App.Config.HomeUrl;
+      }
   });
 
   $.js('product-inc').on('click', function () {
@@ -354,7 +574,7 @@ $(document).ready( function () {
 
       App.SetParam("item_id",id);
 
-      var data = App.Send('cart/item/inc', App.GetParams(), function (data) {
+      var data = App.Send('cart/item/inc', App.GetParams(), function (data,statusText,xhr) {
 
           App.Seed(data);
         
@@ -367,7 +587,7 @@ $(document).ready( function () {
 
       App.SetParam("item_id",id);
 
-      var data = App.Send('cart/item/dec', App.GetParams(), function (data) {
+      var data = App.Send('cart/item/dec', App.GetParams(), function (data, statusText, xhr) {
 
           App.Seed(data);
         
@@ -380,33 +600,26 @@ $(document).ready( function () {
 
       App.SetParam("voucher",value);
 
-      var data = App.Send('cart/voucher/add', App.GetParams(), function (data) {
+      var data = App.Send('cart/voucher/add', App.GetParams(), function (data,statusText,xhr) {
 
-          App.Seed(data);
+          console.log(xhr);
+
+          if(xhr.status == 200)
+          {
+              console.log("rttestsetset");
+              App.Seed(data);
+
+              $.js('voucher.value').val();
+              $.template('voucher.add').hide();
+              $.template('voucher.list').show();
+          }
+          else
+          {
+              $.js('error').html("Voucher.Error.Invalid");
+          }
         
       });
   })
-
-  $.js('address.submit').on('click', function () {
-
-      App.SetParam("id",$.js('address.id').val());
-      App.SetParam("type",$.js('address.type').val());
-      App.SetParam("email",$.js('address.email').val());
-      App.SetParam("firstname",$.js('address.firstname').val());
-      App.SetParam("lastname",$.js('address.lastname').val());
-      App.SetParam("street1",$.js('address.street1').val());
-      App.SetParam("zip",$.js('address.zip').val());
-      App.SetParam("city",$.js('address.city').val());
-      App.SetParam("country",$.js('address.country').val());
-      App.SetParam("company",'');
-      
-      console.log(App.GetParams());
-
-      var data = App.Send('cart/address/add', App.GetParams(), function (data) {
-          App.Seed(data);
-      });
-  })
-
 
 });
 
