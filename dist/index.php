@@ -43,7 +43,7 @@
               </div>
               <div data-template="product.spinner" class="template">
                 <div class="flex">
-                  <h2>Ammount</h2>
+                  <h2>Amount</h2>
                   <div class="spinner"><span data-js="product-dec">-</span><span data-model="product.count" class="count"></span><span data-js="product-inc">+</span></div>
                 </div>
               </div>
@@ -140,17 +140,17 @@
                       <td>Price</td>
                       <td><span data-model="order.items_price"></span></td>
                     </tr>
-                    <tr data-js="toggle.discount">
-                      <td>Discount</td>
-                      <td><span data-model="order.total_discount"></span></td>
-                    </tr>
                     <tr>
                       <td>Shipping</td>
                       <td><span data-model="order.shipping_price"></span></td>
                     </tr>
                     <tr>
-                      <td>Vat</td>
+                      <td>Sales tax / Vat</td>
                       <td><span data-model="order.vat_price"></span></td>
+                    </tr>
+                    <tr data-js="toggle.discount">
+                      <td>Discount</td>
+                      <td><span data-model="order.total_discount"></span></td>
                     </tr>
                   </tbody>
                   <tfoot>
@@ -168,10 +168,6 @@
                     <tr>
                       <td>Price pr. item</td>
                       <td><span data-model="product.retail_price_total"></span></td>
-                    </tr>
-                    <tr data-js="toggle.discount">
-                      <td>Discount</td>
-                      <td><span data-model="order.total_discount"></span></td>
                     </tr>
                     <tr>
                       <td>Count</td>

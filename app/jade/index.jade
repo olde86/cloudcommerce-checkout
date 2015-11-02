@@ -48,7 +48,7 @@ html(lang="en")
 
             .template(data-template="product.spinner")
               .flex
-                h2 Ammount
+                h2 Amount
                 div.spinner
                   span(data-js="product-dec") -
                   span(data-model="product.count").count
@@ -128,15 +128,15 @@ html(lang="en")
                   tr
                     td Price
                     td: span(data-model="order.items_price")
-                  tr(data-js="toggle.discount")
-                    td Discount
-                    td: span(data-model="order.total_discount")
                   tr
                     td Shipping
                     td: span(data-model="order.shipping_price")
                   tr
-                    td Vat
+                    td Sales tax / Vat
                     td: span(data-model="order.vat_price")
+                  tr(data-js="toggle.discount")
+                    td Discount
+                    td: span(data-model="order.total_discount")
                 tfoot
                   tr
                     td Total
@@ -149,9 +149,6 @@ html(lang="en")
                   tr
                     td Price pr. item
                     td: span(data-model="product.retail_price_total")
-                  tr(data-js="toggle.discount")
-                    td Discount
-                    td: span(data-model="order.total_discount")
                   tr
                     td Count
                     td: span(data-model="product.count")

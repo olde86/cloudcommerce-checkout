@@ -28,7 +28,7 @@ App = {
 
     Config : {
 
-        HomeUrl: 'https://www.picture.com',
+        HomeUrl: 'http://www.picture.com',
         BaseUrl: 'https://www.cloudprinter.com',
         Namespace: '2.0',
 
@@ -165,7 +165,6 @@ App = {
             }
             else if(view == 'Success')
             {
-                console.log(146);
                 if(App.State == 2)
                   return true;
             }
@@ -602,11 +601,8 @@ $(document).ready( function () {
 
       var data = App.Send('cart/voucher/add', App.GetParams(), function (data,statusText,xhr) {
 
-          console.log(xhr);
-
           if(xhr.status == 200)
           {
-              console.log("rttestsetset");
               App.Seed(data);
 
               $.js('voucher.value').val();
