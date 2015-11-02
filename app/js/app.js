@@ -133,6 +133,8 @@ App = {
 
         Reset: function () {
             $('.template').hide();
+            $.js('error').html('');
+            $('.steps li').removeClass('selected')
             $('.steps li').removeClass('selected')
         },
 
@@ -486,7 +488,26 @@ Address = {
         Address.Set('city',data);
         Address.Set('country',data);
 
+    },
+
+    ValidateForm: function() {
+        if($.js('address.email').val() != "" &&
+        $.js('address.firstname').val() != "" &&
+        $.js('address.lastname').val() != "" &&
+        $.js('address.street1').val() != "" &&
+        $.js('address.zip').val() != "" &&
+        $.js('address.city').val() != "" &&
+        $.js('address.country').val() != "")
+        {
+            return true;
+        }
+        else
+        {
+            return false
+        }
     }
+
+    
 
 }
 
@@ -526,6 +547,13 @@ $(document).ready( function () {
       }
       else if(App.View.Current == 'Address')
       {
+
+          if(!Address.ValidateForm())
+          {
+              $.js('error').html("Please fill out the address form");
+          }
+
+
           App.SetParam("id",$.js('address.id').val());
           App.SetParam("type",$.js('address.type').val());
           App.SetParam("email",$.js('address.email').val());
@@ -546,7 +574,7 @@ $(document).ready( function () {
               }
               else
               {
-                  $.js('error').html("Address.Error");
+                  $.js('error').html("Something went wrong while trying to save your address.");
               }
                 
           });
@@ -611,7 +639,7 @@ $(document).ready( function () {
           }
           else
           {
-              $.js('error').html("Voucher.Error.Invalid");
+              $.js('error').html("Something went wrong while trying to add your voucher.");
           }
         
       });
