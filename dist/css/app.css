@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(baseline/font-awesome.min.css);
 /* skel-baseline v3.0.0 | (c) n33 | skel.io | MIT licensed */
 /* Reset */
 @import url(https://fonts.googleapis.com/css?family=Amatic+SC);
@@ -2270,3 +2271,15 @@ header#header {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #8f8f8f; }
+
+#error {
+  display: none;
+  background: #FFC7C7;
+  border: 1px solid red;
+  display: block;
+  clear: both;
+  padding: 20px;
+  color: #333;
+  border-radius: 4px; }
+  #error p {
+    margin: 0px; }

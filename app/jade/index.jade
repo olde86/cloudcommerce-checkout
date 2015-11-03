@@ -84,7 +84,8 @@ html(lang="en")
                 div(class="8u$")
                   input(type="text",data-js="address.city", data-model="address.city", placeholder="City")
                 div(class="12u$")
-                  select(data-js="address.country")
+                  div.select-wrapper
+                    select(data-js="address.country")
 
 
           section(class="6u").bully
@@ -169,7 +170,7 @@ html(lang="en")
             a.template(data-template="action-next",data-js="click-next").button.big.pull-right Next
             a.template(data-template="action-home",data-js="click-home").button.big.pull-right Home
 
-            div(data-js="error")
+            div(data-js="error")#error
 
 
 

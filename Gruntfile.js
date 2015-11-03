@@ -59,6 +59,12 @@ module.exports = function ( grunt )
         cwd: 'app/img/',
         src: '**',
         dest: 'dist/img/'
+      },
+      img: {
+        expand: true,
+        cwd: 'bower_components/baseline/assets/fonts/',
+        src: '**',
+        dest: 'dist/fonts/'
       }
     },
     watch: {

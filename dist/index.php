@@ -85,7 +85,9 @@
                     <input type="text" data-js="address.city" data-model="address.city" placeholder="City">
                   </div>
                   <div class="12u$">
-                    <select data-js="address.country"></select>
+                    <div class="select-wrapper">
+                      <select data-js="address.country"></select>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -190,7 +192,7 @@
               <div data-template="404" class="template text-center">
                 <h1>404 Not Found</h1>
               </div><a data-template="action-back" data-js="click-back" class="template button big pull-left">Back</a><a data-template="action-next" data-js="click-next" class="template button big pull-right">Next</a><a data-template="action-home" data-js="click-home" class="template button big pull-right">Home</a>
-              <div data-js="error"></div>
+              <div data-js="error" id="error"></div>
             </section>
           </div>
         </div>

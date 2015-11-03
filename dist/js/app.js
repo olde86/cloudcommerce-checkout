@@ -57,7 +57,7 @@ App = {
     Send : function (endpoint,data,handleData) {
 
         // Clear error message
-        $.js('error').html();
+        App.HideError();
 
         $.ajax({
           url: App.Api.Host + "/" + App.Api.Namespace + "/" + endpoint ,
@@ -133,7 +133,7 @@ App = {
 
         Reset: function () {
             $('.template').hide();
-            $.js('error').html('');
+            App.HideError();
             $('.steps li').removeClass('selected')
             $('.steps li').removeClass('selected')
         },
@@ -317,6 +317,18 @@ App = {
      
     SetCurrency: function (data) {
         this.Currency = data;
+    },
+
+    ShowError: function (data) {
+        var error = $.js('error');
+        error.show();
+        error.html('<p>' + data + '</p>');
+    },
+
+    HideError: function () {
+        var error = $.js('error');
+        error.html('');
+        error.hide();
     }
 
 }
@@ -539,7 +551,8 @@ $(document).ready( function () {
       }
   });
 
-  $.js('click-next').on('click', function () {
+  $.js('click-next').on('click', function (e) {
+      e.preventDefault();
 
       if(App.View.Current == 'Product')
       {
@@ -548,9 +561,12 @@ $(document).ready( function () {
       else if(App.View.Current == 'Address')
       {
 
-          if(!Address.ValidateForm())
+
+          if(Address.ValidateForm() == false)
           {
-              $.js('error').html("Please fill out the address form");
+              console.log(Address.ValidateForm());
+              App.ShowError("Please fill out the address form");
+              return;
           }
 
 
@@ -574,7 +590,7 @@ $(document).ready( function () {
               }
               else
               {
-                  $.js('error').html("Something went wrong while trying to save your address.");
+                  App.ShowError("Something went wrong while trying to save your address.");
               }
                 
           });
@@ -639,7 +655,7 @@ $(document).ready( function () {
           }
           else
           {
-              $.js('error').html("Something went wrong while trying to add your voucher.");
+              App.ShowError("Your voucher could not be added. Please check if you typed it correct");
           }
         
       });
