@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/app.css">
     <script type="text/javascript">
-      Param = {
-          Reference : "<?=$_GET['r'];?>",
-          ShopKey : "<?=$_GET['s'];?>",
+      var Param = {
+        Reference : "<?=$_GET['r'];?>",
+        ShopKey : "<?=$_GET['s'];?>"
       }
       
     </script>
@@ -188,9 +188,11 @@
             <section class="12u$">
               <div data-template="success" class="template text-center">
                 <h1>SUCCESS</h1>
+                <p data-js="success-text" class="lead"></p><a data-js="HomeUrl">Go to picture.com</a>
               </div>
               <div data-template="404" class="template text-center">
                 <h1>404 Not Found</h1>
+                <p data-js="success-text" class="lead">These are not the internetpages your are looking for</p><a data-js="HomeUrl">Go to picture.com</a>
               </div><a data-template="action-back" data-js="click-back" class="template button big pull-left">Back</a><a data-template="action-next" data-js="click-next" class="template button big pull-right">Next</a><a data-template="action-home" data-js="click-home" class="template button big pull-right">Home</a>
               <div data-js="error" id="error"></div>
             </section>

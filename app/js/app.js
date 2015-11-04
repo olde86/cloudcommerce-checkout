@@ -1,3 +1,42 @@
+Helper = {
+    Money : function (data) {
+     return accounting.formatNumber(( data / 10000),2);
+    },
+
+    Price: function (data)
+    {
+      return Helper.Money(data) + ' ' + App.GetCurrency();
+    },
+
+    Get: function (name) {
+
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+
+          results = regex.exec(location.search);
+
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+
+    }
+}
+
+Param.authResult = Helper.Get('authResult');
+
+var lang = {
+  en_US : {
+    Payment: {
+      Responce: {
+        AUTHORISED: "Thank you for ordering at Picture.com.",
+        REFUSED: "Your payment failed. The transaction was refused..",
+        CANCELLED: "Cancelled",
+        PENDING: "It is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.",
+        ERROR: "An error occurred during the payment processing.",
+      }
+    }
+  }
+}
+
 // Jquery extentions
 $.template = function(el){
     return $('[data-template="' + el + '"]')
@@ -76,6 +115,8 @@ App = {
 
     Init: function () {
 
+        $.js('HomeUrl').attr('href', App.Config.HomeUrl);
+
         var data = App.Send('cart/info', this.GetParams(), function (data, statusText, xhr) {
 
             // Set default Addres type
@@ -84,12 +125,43 @@ App = {
             App.Seed(data);
             App.SetState(data.state);
 
-            if( App.State == 1 )
-              App.View.Product(data);
-            else if( App.State == 2 ) 
+
+            if(Param.authResult == "REFUSED")
+            {
+              App.View.Confirm();
+              App.ShowError(lang[App.Config.Language].Payment.Responce.REFUSED)
+            }
+            else if(Param.authResult == "AUTHORISED")
+            {
               App.View.Success();
+              $.js('success-text').html(lang[App.Config.Language].Payment.Responce.AUTHORISED);
+            }
+            else if(Param.authResult == "CANCELLED")
+            {
+              App.View.Confirm();
+            }
+            else if(Param.authResult == "PENDING")
+            {
+              App.View.Success();
+              $.js('success-text').html(lang[App.Config.Language].Payment.Responce.PENDING)
+            }
+            else if(Param.authResult == "ERROR")
+            {
+              App.View.Confirm();
+              App.ShowError(lang[App.Config.Language].Payment.Responce.ERROR)
+            }
+            else if( App.State == 1 )
+            {
+              App.View.Product(data);
+            }
+            else if( App.State == 2 ) 
+            {
+              App.View.Success();
+            }
             else
+            {
               App.View.NotFound();
+            }
 
         });
 
@@ -98,7 +170,6 @@ App = {
           $.each(data, function (key, value) {
               $.js('address.country').append('<option value="' + value.name + '">' + value.note+ '</option>');
           });
-
         });
         
     },
@@ -167,7 +238,11 @@ App = {
             }
             else if(view == 'Success')
             {
-                if(App.State == 2)
+                if(Param.authResult == 'AUTHORISED' )
+                  return true;
+                else if(Param.authResult == 'PENDING' )
+                  return true;
+                else if(App.State == 2)
                   return true;
             }
             
@@ -478,15 +553,26 @@ Address = {
     Set: function (value, data) {
 
       if(value == 'country' && data[value] == false)
+      {
         $.js('address.country').val('US');
-      else
+      }
+      else if(value == 'country' && data[value] != false)
+      {
         $.js('address.country').val(data[value]);
+      }
+      else {
+        // Set US as default
+        $.js('address.country').val('US');
+      }
     
       Model.Set(value,data, null, this);
 
     },
 
     Populate : function (data) {
+
+        // Set US as default
+        $.js('address.country').val('US');
         
         //App variables
         Address.Set('id',data);
@@ -523,17 +609,6 @@ Address = {
 
 }
 
-Helper = {
-    Money : function (data) {
-     return accounting.formatNumber(( data / 10000),2);
-    },
-
-    Price: function (data)
-    {
-      return Helper.Money(data) + ' ' + App.GetCurrency();
-    }
-}
-
 App.Init();
 
 
@@ -564,7 +639,6 @@ $(document).ready( function () {
 
           if(Address.ValidateForm() == false)
           {
-              console.log(Address.ValidateForm());
               App.ShowError("Please fill out the address form");
               return;
           }

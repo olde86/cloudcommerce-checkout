@@ -8,11 +8,11 @@ html(lang="en")
     link(rel="stylesheet", href="css/app.css")
 
     script(type="text/javascript").
-      Param = {
-          Reference : "<?=$_GET['r'];?>",
-          ShopKey : "<?=$_GET['s'];?>",
+      var Param = {
+        Reference : "<?=$_GET['r'];?>",
+        ShopKey : "<?=$_GET['s'];?>"
       }
-    
+
   body
 
     // Header
@@ -162,9 +162,14 @@ html(lang="en")
 
             .template(data-template="success").text-center
               h1 SUCCESS
+              p.lead(data-js="success-text")
+              a(data-js="HomeUrl") Go to picture.com
+
 
             .template(data-template="404").text-center
               h1 404 Not Found
+              p.lead(data-js="success-text") These are not the internetpages your are looking for
+              a(data-js="HomeUrl") Go to picture.com
 
             a.template(data-template="action-back",data-js="click-back").button.big.pull-left Back
             a.template(data-template="action-next",data-js="click-next").button.big.pull-right Next
