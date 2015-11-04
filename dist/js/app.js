@@ -38,6 +38,10 @@ var lang = {
 }
 
 // Jquery extentions
+$.error = function(el){
+    return $('[data-error="' + el + '"]')
+};
+
 $.template = function(el){
     return $('[data-template="' + el + '"]')
 };
@@ -148,7 +152,7 @@ App = {
             else if(Param.authResult == "ERROR")
             {
               App.View.Confirm();
-              App.ShowError(lang[App.Config.Language].Payment.Responce.ERROR)
+              App.ShowError(lang[App.Config.Language].Payment.Responce.ERROR, 'top')
             }
             else if( App.State == 1 )
             {
@@ -394,16 +398,19 @@ App = {
         this.Currency = data;
     },
 
-    ShowError: function (data) {
-        var error = $.js('error');
-        error.show();
-        error.html('<p>' + data + '</p>');
+    ShowError: function (data, pos) {
+        pos = pos || false;
+
+        if(pos == false)
+          $.error('bottom').html('<p>' + data + '</p>').show();
+        else
+          $.error(pos).html('<p>' + data + '</p>').show();
+
     },
 
     HideError: function () {
-        var error = $.js('error');
-        error.html('');
-        error.hide();
+        $.error('top').html('').hide();
+        $.error('bottom').html('').hide();
     }
 
 }
@@ -552,17 +559,9 @@ Address = {
 
     Set: function (value, data) {
 
-      if(value == 'country' && data[value] == false)
-      {
-        $.js('address.country').val('US');
-      }
-      else if(value == 'country' && data[value] != false)
+      if(value == 'country' && data[value])
       {
         $.js('address.country').val(data[value]);
-      }
-      else {
-        // Set US as default
-        $.js('address.country').val('US');
       }
     
       Model.Set(value,data, null, this);

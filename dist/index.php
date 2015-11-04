@@ -23,6 +23,7 @@
       <div id="main" class="container">
         <div class="row">
           <section class="12u$ text-center">
+            <div data-error="top" class="error top"></div>
             <ul class="steps">
               <li data-view="Product">1. Product</li>
               <li data-view="Address">2. Address</li>
@@ -194,7 +195,7 @@
                 <h1>404 Not Found</h1>
                 <p data-js="success-text" class="lead">These are not the internetpages your are looking for</p><a data-js="HomeUrl">Go to picture.com</a>
               </div><a data-template="action-back" data-js="click-back" class="template button big pull-left">Back</a><a data-template="action-next" data-js="click-next" class="template button big pull-right">Next</a><a data-template="action-home" data-js="click-home" class="template button big pull-right">Home</a>
-              <div data-js="error" id="error"></div>
+              <div data-error="bottom" class="error"></div>
             </section>
           </div>
         </div>

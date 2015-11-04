@@ -28,6 +28,7 @@ html(lang="en")
       div#main.container
         .row
           section(class="12u$").text-center
+            div(data-error="top").error.top
             ul.steps
               li(data-view="Product") 1. Product
               li(data-view="Address") 2. Address
@@ -175,7 +176,7 @@ html(lang="en")
             a.template(data-template="action-next",data-js="click-next").button.big.pull-right Next
             a.template(data-template="action-home",data-js="click-home").button.big.pull-right Home
 
-            div(data-js="error")#error
+            div(data-error="bottom").error
 
 
 
