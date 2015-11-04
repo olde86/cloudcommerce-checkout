@@ -269,7 +269,11 @@ App = {
                 $.template('product.details').show();
                 $.template('product.options').show();
                 $.template('action-next').show();
+               
                 if(data && data.voucher)
+                    Order.HasVoucher = true;
+
+                if(Order.HasVoucher)
                   $.template('voucher.list').show();
                 else
                   $.template('voucher.add').show();
@@ -523,6 +527,8 @@ Order = {
     model: 'order',
 
     prices: ['items_price','total_price','shipping_price','fee_price','vat_price','total_discount'],
+
+    HasVoucher : null,
 
     Set: function (value, data) {
 
