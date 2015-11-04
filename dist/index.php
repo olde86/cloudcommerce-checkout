@@ -8,7 +8,8 @@
     <script type="text/javascript">
       var Param = {
         Reference : "<?=$_GET['r'];?>",
-        ShopKey : "<?=$_GET['s'];?>"
+        ShopKey : "<?=$_GET['s'];?>",
+        Namespace : "<?=$_GET['v'];?>"
       }
       
     </script>

@@ -27,11 +27,11 @@ var lang = {
   en_US : {
     Payment: {
       Responce: {
-        AUTHORISED: "Thank you for ordering at Picture.com.",
-        REFUSED: "Your payment failed. The transaction was refused..",
+        AUTHORISED: "Thank you for your Picture.com order.",
+        REFUSED: "We are unable to process your payment. Please confirm the payment information was entered correctly or try another form of payment.",
         CANCELLED: "Cancelled",
-        PENDING: "It is not possible to obtain the final status of the payment. This can happen if the systems providing final status information for the payment are unavailable, or if the shopper needs to take further action to complete the payment.",
-        ERROR: "An error occurred during the payment processing.",
+        PENDING: "Your payment is pending approval. Thank you for your patience.",
+        ERROR: "An error occurred while processing your payment.",
       }
     }
   }
@@ -64,7 +64,7 @@ App = {
     Api: {
   
         Host: 'https://api.cloudprinter.com',
-        Namespace: '2.1'
+        Namespace: Param.Namespace
 
     },
 
@@ -73,7 +73,7 @@ App = {
 
         HomeUrl: 'http://www.picture.com',
         BaseUrl: 'https://www.cloudprinter.com',
-        Namespace: '2.0',
+        Namespace: Param.Namespace,
 
         Payment : {
             Endpoint : "payment",
@@ -174,7 +174,11 @@ App = {
           $.each(data, function (key, value) {
               $.js('address.country').append('<option value="' + value.name + '">' + value.note+ '</option>');
           });
+
+          if($.js('address.country').children('option[selected="selected"]').val() === undefined)
+            $.js('address.country').children('option[value="US"]').attr('selected','selected');
         });
+
         
     },
 
@@ -561,7 +565,8 @@ Address = {
 
       if(value == 'country' && data[value])
       {
-        $.js('address.country').val(data[value]);
+        $.js('address.country').children('option[selected="selected"]').removeAttr('selected');
+        $.js('address.country').children('option[value="' + data[value] + '"]').attr('selected','selected');
       }
     
       Model.Set(value,data, null, this);
@@ -570,9 +575,6 @@ Address = {
 
     Populate : function (data) {
 
-        // Set US as default
-        $.js('address.country').val('US');
-        
         //App variables
         Address.Set('id',data);
         Address.Set('type',data);
@@ -638,7 +640,7 @@ $(document).ready( function () {
 
           if(Address.ValidateForm() == false)
           {
-              App.ShowError("Please fill out the address form");
+              App.ShowError("Please complete the address fields before continuing.");
               return;
           }
 
@@ -728,7 +730,7 @@ $(document).ready( function () {
           }
           else
           {
-              App.ShowError("Your voucher could not be added. Please check if you typed it correct");
+              App.ShowError("We do not recognize the coupon code you entered. Please ensure it is entered correctly.");
           }
         
       });
